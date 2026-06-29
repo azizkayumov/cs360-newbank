@@ -43,7 +43,7 @@ def register(request):
             #error_message = 'Email already exists'
             error_message = 'Invalid credentials'
         else:
-            account = Account.objects.create_user(username=username, password=password, email=email, balance=100.00)
+            account = Account.objects.create_user(username=username, password=password, email=email, balance=0)
             auth_login(request, account)
             return redirect('accounts:my_account')
     return render(request, 'accounts/register.html', {'error_message': error_message})
