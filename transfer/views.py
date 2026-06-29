@@ -25,14 +25,14 @@ def transfer(request):
         amount = request.POST.get('amount')
         to_user = request.POST.get('to_account')
         
-        if float(amount) < 100:
+        if Decimal(amount) < 100:
             error_message = "The minimum transfer amount is 100."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
         current_user = request.user
         if current_user.email == to_user:
             error_message = "You cannot transfer money to yourself."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
-        if current_user.balance < float(amount):
+        if current_user.balance < Decimal(amount):
             error_message = "Insufficient balance."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
         try:
