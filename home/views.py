@@ -34,3 +34,8 @@ def card_detail(request, card_name):
     </html>
     """
     return HttpResponse(html_content)
+
+from django.http import HttpResponse
+
+def currency_view(request):
+    return HttpResponse("<h1>NewBank Currency Exchange Hub</h1><p>Simple fix works!</p>")
