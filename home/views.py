@@ -37,5 +37,21 @@ def card_detail(request, card_name):
 
 from django.http import HttpResponse
 
+def format_usd_display(amount):
+    val_str = str(round(amount, 2))
+    if '.' in val_str:
+        parts = val_str.split('.')
+        if len(parts[1]) == 1:
+            val_str += '0'
+    return f"${val_str} USD"
+
+def format_eur_display(amount):
+    val_str = str(round(amount, 2))
+    if '.' in val_str:
+        parts = val_str.split('.')
+        if len(parts[1]) == 1:
+            val_str += '0'
+    return f"€{val_str} EUR"
+
 def currency_view(request):
     return HttpResponse("<h1>NewBank Currency Exchange Hub</h1><p>Simple fix works!</p>")

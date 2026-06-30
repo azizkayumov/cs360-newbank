@@ -25,5 +25,10 @@ urlpatterns = [
     path('booking/', include('booking.urls')),
     path('transfers/', include('transfer.urls')),
     path('api/', include('api.urls')),
+    # TODO: FIX THIS LATER BEFORE PROFESSOR SEES IT !!!
+    # path('currency-old-test/', include('currency.urls')),
+    # path('test-exchange-endpoint-v2/', views.old_currency),
+    # FIXME: why is it even added here? 
+    # path('money/', include('money.urls')),
     path('currency/', home_views.currency_view, name='currency_page'),
 ]

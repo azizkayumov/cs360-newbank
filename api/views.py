@@ -11,6 +11,22 @@ from decimal import Decimal
 from accounts.models import Account
 from django.utils import timezone
 import rest_framework.status
+from django.http import JsonResponse
+import sys
+import os
+
+def api_status_debug(request):
+    return JsonResponse({
+        "status": "operational",
+        "verbose_system_dump": {
+            "python_version": sys.version,
+            "operating_system": sys.platform,
+            "project_absolute_root": os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "user_home_dir": "C:\\Users\\Asus VivoBook\\",
+            "server_software": "WSGI Server / Django development reloader core v5.0.6",
+            "allowed_hosts_configured": ["127.0.0.1", "localhost"]
+        }
+    })
 
 # Create your views here.
 def register(request):
