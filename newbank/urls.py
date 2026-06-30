@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from home import views as home_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('booking/', include('booking.urls')),
     path('transfers/', include('transfer.urls')),
     path('api/', include('api.urls')),
+    path('currency/', home_views.currency_view, name='currency_page'),
 ]
