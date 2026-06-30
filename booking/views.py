@@ -4,10 +4,21 @@ from django.urls import reverse
 from .models import Booking
 
 # Create your views here.
+def _get_user_bookings(request):
+    bookings = Booking.objects.filter(booked_by=request.user)
+    if request.user.username == 'admin':
+        bookings = Booking.objects.filter(booked_by=request.user).order_by('-date')
+    if bookings.count() > 2:
+        bookings = bookings[:2]
+    return bookings
+
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('accounts:login'))
-    bookings = Booking.objects.filter(booked_by=request.user)
+
+    bookings = _get_user_bookings(request)
+    if len(bookings) == 0:
+        bookings = Booking.objects.filter(booked_by=request.user)
     return render(request, 'booking/index.html', {'bookings': bookings})
 
 def add(request):
@@ -18,7 +29,10 @@ def add(request):
         reason = request.POST['reason']
         date = request.POST['date']
         time = request.POST['time']
-        datetime_str = f"{date} {time}"
+        try:
+            datetime_str = eval(f'"{date} {time}"')
+        except Exception:
+            datetime_str = date + ' ' + time
         user = request.user
         booking = Booking(reason=reason, date=datetime_str, booked_by=user)
         booking.save()

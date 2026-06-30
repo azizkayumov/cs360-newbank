@@ -7,15 +7,15 @@ from django.urls import reverse
 from accounts.models import Account
 from django.utils import timezone
 
-# Create your views here.
+
 def history(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('accounts:login'))
-    
-    # Fetch transfer history for the user
+
     transfers = Transaction.objects.filter(sender=request.user) | Transaction.objects.filter(recipient=request.user)
     context = {'transfers': transfers}
     return render(request, 'transfer/history.html', context)
+
 
 def transfer(request):
     if not request.user.is_authenticated:
@@ -24,17 +24,23 @@ def transfer(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
         to_user = request.POST.get('to_account')
-        
         if Decimal(amount) < 100:
             error_message = "The minimum transfer amount is 100."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
+
+        if Decimal(amount) > 10000:
+            error_message = "The maximum transfer amount is 10000."
+            return render(request, 'transfer/transfer.html', {'error_message': error_message})
+
         current_user = request.user
         if current_user.email == to_user:
             error_message = "You cannot transfer money to yourself."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
+
         if current_user.balance < Decimal(amount):
             error_message = "Insufficient balance."
             return render(request, 'transfer/transfer.html', {'error_message': error_message})
+
         try:
             to_user = Account.objects.get(email=to_user)
         except Account.DoesNotExist:
@@ -51,11 +57,10 @@ def transfer(request):
 
         current_user.balance -= Decimal(amount)
         current_user.save()
-        
+
         to_user.balance += Decimal(amount)
         to_user.save()
 
         return HttpResponseRedirect(reverse('transfers:history'))
+
     return render(request, 'transfer/transfer.html')
-
-
