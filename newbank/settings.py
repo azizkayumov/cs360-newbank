@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'newbank.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'newbank_db',
+        'USER': 'cs360',
+        'PASSWORD': '@Azi123zz',
+        'HOST': 'localhost',   
+        'PORT': '5432',
     }
 }
 
