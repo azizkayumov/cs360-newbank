@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from accounts.models import Account
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import HttpResponse
 
 # Create your views here.
 def my_account(request):
@@ -22,6 +23,14 @@ def login(request):
             return redirect('accounts:my_account')
         error_message = 'Invalid username or password'
     return render(request, 'accounts/login.html', {'error_message': error_message})
+
+def lookup(request):
+    username = request.GET.get('username', '')
+    query = "SELECT * FROM accounts_account WHERE username = '" + username + "'"
+    accounts = Account.objects.raw(query)
+    results = "<br>".join(account.username for account in accounts) or "No matching accounts."
+    return HttpResponse(f"<h2>Account lookup</h2><p>Query: {query}</p><p>Results: {results}</p>")
+
 
 def logout(request):
     auth_logout(request)

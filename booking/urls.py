@@ -5,4 +5,5 @@ app_name = 'booking'
 urlpatterns = [
     path('', views.index, name='index'),
     path('add/', views.add, name='add'),
+    path('remove/<int:booking_id>/', views.remove, name='remove'),
 ]

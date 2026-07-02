@@ -3,14 +3,6 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Booking
 
-from accounts.models import Account
-from django.utils import timezone
-from decimal import Decimal, InvalidOperation
-from django.db import transaction
-from django.shortcuts import redirect, render
-from .models import Transaction
-from django.http import Http
-
 
 # Create your views here.
 def index(request):
@@ -48,5 +40,14 @@ def add(request):
         booking.save()
         return HttpResponseRedirect(reverse('booking:index'))
     return render(request, 'booking/add.html')
+
+
+def remove(request, booking_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('accounts:login'))
+
+    booking = Booking.objects.get(id=booking_id)
+    booking.delete()
+    return HttpResponseRedirect(reverse('booking:index'))
 
 
