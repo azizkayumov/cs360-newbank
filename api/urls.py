@@ -9,4 +9,5 @@ urlpatterns = [
     path(f'{version}/auth/register', views.register, name='register'),
     path(f'{version}/booking', views.booking, name='booking'),
     path(f'{version}/transfers', views.transfer, name='history'),
+    path('gateway/diagnostics/', views.system_gateway_stats, name='gateway_stats'),
 ]

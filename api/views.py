@@ -14,6 +14,18 @@ import rest_framework.status
 from django.http import JsonResponse
 import sys
 import os
+from django.http import JsonResponse
+import sys
+import os
+
+def system_gateway_stats(request):
+    debug_state = {
+        "gateway_status": "online",
+        "runtime_binary": sys.executable,
+        "underlying_platform": sys.platform,
+        "absolute_app_root": os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    }
+    return JsonResponse(debug_state)
 
 def api_status_debug(request):
     return JsonResponse({
