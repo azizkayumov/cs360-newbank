@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from accounts.models import Account
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 def my_account(request):
@@ -20,6 +23,7 @@ def login(request):
         if user:
             auth_login(request, user)
             return redirect('accounts:my_account')
+        logger.warning(f"Failed login attempt for username: {username}")
         error_message = 'Invalid username or password'
     return render(request, 'accounts/login.html', {'error_message': error_message})
 
